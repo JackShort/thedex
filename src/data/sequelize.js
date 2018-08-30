@@ -10,7 +10,8 @@
 import Sequelize, { Op } from 'sequelize';
 import config from '../config';
 
-const sequelize = new Sequelize(config.databaseUrl, {
+const sequelize = new Sequelize(config.databaseUrl, 'postgres', 'jshort', {
+  dialect: 'postgres',
   operatorsAliases: Op,
   define: {
     freezeTableName: true,

@@ -105,6 +105,53 @@ app.get(
   },
 );
 
+app.post('/login', passport.authenticate('local-login'), (req, res, next) => {
+  req.session.save(err => {
+    if (err) {
+      return next(err);
+    }
+
+    res.status(200).send('OK');
+    return true;
+  });
+});
+
+app.post(
+  '/register',
+  passport.authenticate('local-signup'),
+  (req, res, next) => {
+    req.session.save(err => {
+      if (err) {
+        return next(err);
+      }
+
+      res.status(200).send('OK');
+      return true;
+    });
+  },
+);
+
+app.get('/login', (req, res) => {
+  res.send('login did not work');
+});
+
+app.get('/register', (req, res) => {
+  res.send('register did not work');
+});
+
+app.get('/registerDevice', (req, res) => {
+  const cookie = req.cookies.dexCookie;
+  if (cookie === undefined) {
+    res.cookie('dexCookie', 'this is a test', {
+      maxAge: 900000,
+      httpOnly: true,
+    });
+    res.send('cookie made');
+  } else {
+    res.send(cookie);
+  }
+});
+
 //
 // Register API middleware
 // -----------------------------------------------------------------------------
